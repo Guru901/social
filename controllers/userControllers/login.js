@@ -12,7 +12,6 @@ const Login = async (req, res) => {
         username: user.username,
         msg: "Logged In succesfully",
         state: true,
-        user,
       });
     } else {
       res.json({ msg: "Incorrect Credentials" });

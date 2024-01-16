@@ -12,7 +12,11 @@ const register = async (req, res) => {
         password: req.body.password,
       });
       await user.save();
-      res.status(201).json({ msg: "Succesfully registered", state: true });
+      res.status(201).json({
+        username: user.username,
+        msg: "Succesfully registered",
+        state: true,
+      });
     }
 
     if (exist) {
