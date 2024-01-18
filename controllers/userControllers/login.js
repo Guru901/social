@@ -9,8 +9,7 @@ const Login = async (req, res) => {
 
     if (user) {
       res.json({
-        username: user.username,
-        msg: "Logged In succesfully",
+        user,
         state: true,
       });
     } else {

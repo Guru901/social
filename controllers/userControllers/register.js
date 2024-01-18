@@ -1,30 +1,36 @@
 const userModel = require("../../models/userModel");
 
-const register = async (req, res) => {
+const Register = async (req, res) => {
   try {
     const exist = await userModel.findOne({
       username: req.body.username,
     });
 
-    if (!exist) {
-      const user = await new userModel({
-        username: req.body.username,
-        password: req.body.password,
-      });
-      await user.save();
-      res.status(201).json({
-        username: user.username,
-        msg: "Succesfully registered",
-        state: true,
+    if (exist) {
+      return res.json({
+        msg: "Username taken, please use something else",
+        state: false,
       });
     }
 
-    if (exist) {
-      res.json({ msg: "Username taken please use something else" });
-    }
+    const file = req.file;
+
+    const user = new userModel({
+      username: req.body.username,
+      password: req.body.password,
+    });
+
+    await user.save();
+
+    res.status(201).json({
+      username: user.username,
+      msg: "Successfully registered",
+      state: true,
+    });
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    res.status(500).json({ msg: "Internal Server Error" });
   }
 };
 
-module.exports = register;
+module.exports = Register;
