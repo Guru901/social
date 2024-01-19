@@ -5,11 +5,14 @@ const uploadPost = async (req, res) => {
   try {
     const userId = req.body.userId;
 
+    const username = await userModel.findById(userId);
+
     const post = new postModel({
       title: req.body.title,
       body: req.body.body,
       img: req.body.file,
       user: userId,
+      username: username.username,
     });
 
     const savedPost = await post.save();
