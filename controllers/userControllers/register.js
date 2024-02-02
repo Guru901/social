@@ -1,4 +1,5 @@
 const userModel = require("../../models/userModel");
+const fileUpload = require("../../utils/cloudinary");
 
 const Register = async (req, res) => {
   try {
@@ -13,17 +14,21 @@ const Register = async (req, res) => {
       });
     }
 
-    const file = req.file;
+    const file = req.file.filename;
+    if (file) {
+      var onlinePath = await fileUpload(`public/images/${file}`);
+    }
 
     const user = new userModel({
       username: req.body.username,
       password: req.body.password,
+      avatar: onlinePath.url,
     });
 
     await user.save();
 
     res.status(201).json({
-      username: user.username,
+      user,
       msg: "Successfully registered",
       state: true,
     });

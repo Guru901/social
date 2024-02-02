@@ -5,12 +5,13 @@ const cors = require("cors");
 const db = require("./models/db.js");
 const userRouter = require("./routes/user.route.js");
 const postRouter = require("./routes/post.route.js");
+const fileUpload = require("./utils/cloudinary.js");
 
 const port = 3000;
 const app = express();
 
 app.use(express.json());
-
+app.use(express.static("public"));
 app.use(cors());
 
 app.use("/api", userRouter);

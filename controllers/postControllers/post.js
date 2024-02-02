@@ -1,23 +1,36 @@
 const postModel = require("../../models/postModel");
 const userModel = require("../../models/userModel");
+const fileUpload = require("../../utils/cloudinary");
 
 const uploadPost = async (req, res) => {
   try {
     const userId = req.body.userId;
 
-    const username = await userModel.findById(userId);
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found", state: false });
+    }
+
+    const { title, body } = req.body;
+
+    if (req.file) {
+      var file = req.file.filename;
+    }
+
+    if (file) {
+      var onlinePath = await fileUpload(`public/images/${file}`);
+    }
 
     const post = new postModel({
-      title: req.body.title,
-      body: req.body.body,
-      img: req.body.file,
+      title,
+      body,
+      image: onlinePath ? onlinePath.url : "",
       user: userId,
-      username: username.username,
+      username: user.username,
     });
 
     const savedPost = await post.save();
 
-    // Update the userModel to include the post reference
     await userModel.findByIdAndUpdate(
       userId,
       { $push: { posts: savedPost._id } },

@@ -15,10 +15,12 @@ const fileUpload = async (localFilePath) => {
       resource_type: "auto",
     });
 
-    fs.unlinkSync(localFilePath);
+    const formattedPath = localFilePath.replace(/\\/g, "/");
+    fs.unlinkSync(formattedPath);
     return file;
   } catch (error) {
-    fs.unlinkSync(localFilePath);
+    console.error("Error during file upload or deletion:", error);
+    fs.unlinkSync(localFilePath); // Ensure deletion even in case of an error
     return null;
   }
 };
