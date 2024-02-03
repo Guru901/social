@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   avatar: String,
+  liked: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "likes",
+  },
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
 });
 

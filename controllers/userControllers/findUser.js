@@ -3,8 +3,7 @@ const userModel = require("../../models/userModel");
 
 const findUser = async (req, res) => {
   try {
-    const user = await postModel.find({ user: req.params.id });
-
+    const user = await userModel.findById(req.params.id);
     res.status(200).json(user);
   } catch (error) {
     console.error("Error fetching post:", error);

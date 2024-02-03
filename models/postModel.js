@@ -26,6 +26,26 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  likes: {
+    type: Number,
+    default: 0,
+  },
+  disLikes: {
+    type: Number,
+    default: 0,
+  },
+  userLiked: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+    },
+  ],
+  userDisLiked: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+    },
+  ],
 });
 
 module.exports = mongoose.model("postModel", postSchema);

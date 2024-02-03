@@ -14,15 +14,17 @@ const Register = async (req, res) => {
       });
     }
 
-    const file = req.file.filename;
-    if (file) {
-      var onlinePath = await fileUpload(`public/images/${file}`);
+    if (req.file) {
+      var file = req.file.filename;
+      if (file) {
+        var onlinePath = await fileUpload(`public/images/${file}`);
+      }
     }
 
     const user = new userModel({
       username: req.body.username,
       password: req.body.password,
-      avatar: onlinePath.url,
+      avatar: onlinePath ? onlinePath.url : "",
     });
 
     await user.save();
